@@ -1,8 +1,7 @@
-import ProductCard from "@/components/product/productCard";
 import ProductSection from "@/components/product/ProductSection";
 import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse, Category, Product } from "@/types/catalog";
-import { Z_BEST_COMPRESSION } from "zlib";
+
 
 export default async function HomePage(){
   const [categories, trending, best] = await Promise.all([
@@ -13,7 +12,7 @@ export default async function HomePage(){
       populate: "*",
     }),
     fetchStrapi<StrapiResponse<Product>>("/products", {
-      "filters[isBest]": 'true',
+      "filters[isBest][$eq]": 'true',
       "pagination[pageSize]": "8",
       populate: "*",
     })
