@@ -1,4 +1,4 @@
-export default function formatPrice(amount: number): string {
+export function formatPrice(amount: number): string {
     return new Intl.NumberFormat("en-AE", {
         style: "currency",
         currency: "AED",

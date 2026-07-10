@@ -1,4 +1,4 @@
-import formatPrice from "@/lib/format";
+import {formatPrice} from "@/lib/format";
 import type { Product } from "@/types/catalog";
 import Image from "next/image";
 import Link from "next/link";
