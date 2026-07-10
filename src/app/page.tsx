@@ -1,3 +1,4 @@
+import CategoryCard from "@/components/home/CategoryCard";
 import ProductSection from "@/components/product/ProductSection";
 import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse, Category, Product } from "@/types/catalog";
@@ -5,7 +6,7 @@ import type { StrapiResponse, Category, Product } from "@/types/catalog";
 
 export default async function HomePage(){
   const [categories, trending, best] = await Promise.all([
-    fetchStrapi<StrapiResponse<Category>>("/categories"),
+    fetchStrapi<StrapiResponse<Category>>("/categories", { populate: "image"}),
     fetchStrapi<StrapiResponse<Product>>('/products', {
       "filters[isTrending][$eq]": "true",
       "pagination[pageSize]": "8",
@@ -27,9 +28,8 @@ export default async function HomePage(){
             categories.data.map((category) => (
               <li
                 key={category.documentId}
-                className="rounded-full border border-gray-300 px-4 py-2 text-sm"
               >
-                {category.name}
+                <CategoryCard category={category}/>
               </li>
             ))
           }

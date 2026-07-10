@@ -1,4 +1,5 @@
 import {formatPrice} from "@/lib/format";
+import { mediaUrl } from "@/lib/strapi";
 import type { Product } from "@/types/catalog";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +15,7 @@ return (
     >
      {image ? (
         <Image
-            src={`http://localhost:1337${image.url}`}
+            src={mediaUrl(image.url)}
             alt={image.alternativeText ?? product.name}
             width={300}
             height={300}

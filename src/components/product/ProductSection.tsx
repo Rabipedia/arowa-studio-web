@@ -1,5 +1,5 @@
 import type { Product } from "@/types/catalog";
-import ProductCard from "./ProductCard";
+import ProductCard from "./productCard";
 
 export default function ProductSection({
     title,
