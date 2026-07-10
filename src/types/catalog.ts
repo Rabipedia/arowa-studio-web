@@ -80,6 +80,8 @@ export interface Product extends StrapiEntity {
     displayPrice: number | null;
     averageRating: number | null;
     reviewCount: number;
+    isTrending: boolean | null;
+    isBest: boolean | null;
     category?: Category | null;
     images?: StrapiImage[];
     variants?: ProductVariant[];
