@@ -86,3 +86,11 @@ export interface Product extends StrapiEntity {
     images?: StrapiImage[];
     variants?: ProductVariant[];
 }
+
+export interface HeroBanner extends StrapiEntity {
+    title: string;
+    subtitle: string | null;
+    image: StrapiImage;
+    linkUrl: string | null;
+    displayOrder: number;
+}
