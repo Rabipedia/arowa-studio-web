@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Product, ProductVariant, Attribute, AttributeValue } from '@/types/catalog';
 import { mediaUrl } from '@/lib/strapi';
 import { formatPrice } from '@/lib/format';
+import { useCart } from '@/context/CartContext';
 
 type Selection = Record<string, string>;
 
@@ -47,6 +48,7 @@ export default function ProductView({ product }: { product: Product }) {
   );
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
+  const {addItem} = useCart();
 
   const selectedVariant = variants.find((variant) =>
     Object.entries(selection).every(([, valueId]) =>
@@ -192,6 +194,7 @@ export default function ProductView({ product }: { product: Product }) {
           </div>
 
           <button
+            onClick={() => selectedVariant && addItem(selectedVariant.documentId, quantity)}
             disabled={!selectedVariant || selectedVariant.stock === 0}
             className="flex-1 rounded bg-black px-6 py-3 text-sm font-medium text-white disabled:bg-gray-300"
           >

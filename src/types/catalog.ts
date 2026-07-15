@@ -68,6 +68,7 @@ export interface ProductVariant extends StrapiEntity {
     weight: number | null;
     attributeValues?: AttributeValue[];
     images?: StrapiImage[];
+    product?: Product;
 }
 
 export interface Product extends StrapiEntity {

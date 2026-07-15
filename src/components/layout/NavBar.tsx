@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CartBadge from "./CartBadge";
 
 export default function NavBar() {
     return (
@@ -17,7 +18,7 @@ export default function NavBar() {
                 </form>
                 <div className="flex items-center gap-4 text-sm">
                     <Link href="/auth/login">Account</Link>
-                    <Link href="/cart">Cart</Link>
+                    <CartBadge/>
                 </div>
             </nav>
         </header>
