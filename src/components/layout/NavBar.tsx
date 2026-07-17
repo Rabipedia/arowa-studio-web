@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CartBadge from "./CartBadge";
+import AccountNav from "./AccountNav";
 
 export default function NavBar() {
     return (
@@ -17,7 +18,7 @@ export default function NavBar() {
                     />
                 </form>
                 <div className="flex items-center gap-4 text-sm">
-                    <Link href="/auth/login">Account</Link>
+                    <AccountNav/>
                     <CartBadge/>
                 </div>
             </nav>
