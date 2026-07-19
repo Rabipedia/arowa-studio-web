@@ -95,3 +95,17 @@ export interface HeroBanner extends StrapiEntity {
     linkUrl: string | null;
     displayOrder: number;
 }
+
+export interface ShippingMethod extends StrapiEntity {
+    name: string;
+    cost: number;
+    estimatedDate: string | null;
+    isActive: boolean;
+}
+
+export interface ShippingMethod extends StrapiEntity {
+    name: string;
+    cost: number;
+    estimatedDays: string | null;
+    isActive: boolean;
+}

@@ -29,3 +29,17 @@ export function mediaUrl(path: string): string {
   if(path.startsWith("http")) return path;
   return `${process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337"}${path}`;
 }
+
+export async function postStrapi<T>(path: string, body: unknown): Promise<T> {
+  const url = new URL(`/api${path}`, STRAPI_URL);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json"},
+    body: JSON.stringify(body),
+  });
+  if(!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error?.message ?? `Request failed: ${res.status}`);
+  }
+  return res.json();
+}
