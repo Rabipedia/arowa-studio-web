@@ -50,6 +50,15 @@ export default function ProductView({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState(0);
   const {addItem} = useCart();
 
+  const [added, setAdded] = useState(false);
+
+  function handleAddToCart() {
+    if (!selectedVariant) return;
+    addItem(selectedVariant.documentId, quantity);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  }
+
   const selectedVariant = variants.find((variant) =>
     Object.entries(selection).every(([, valueId]) =>
       variant.attributeValues?.some((av) => av.documentId === valueId)
@@ -194,11 +203,12 @@ export default function ProductView({ product }: { product: Product }) {
           </div>
 
           <button
-            onClick={() => selectedVariant && addItem(selectedVariant.documentId, quantity)}
+            onClick={handleAddToCart}
             disabled={!selectedVariant || selectedVariant.stock === 0}
             className="flex-1 rounded bg-black px-6 py-3 text-sm font-medium text-white disabled:bg-gray-300"
           >
-            Add to cart
+           {added ? "Added to cart ✓" : "Add to cart"}
+            
           </button>
         </div>
       </div>

@@ -8,5 +8,5 @@ export async function POST(request: Request) {
         "auth/local/register",
         {username: email, email, password},
         "Registration failed"
-    );
+    ); 
 }

@@ -12,6 +12,9 @@ import { checkoutSchema, type CheckoutFormData } from "@/lib/validation/checkout
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import type { StrapiResponse, ShippingMethod } from "@/types/catalog";
+import { Elements } from "@stripe/react-stripe-js";
+import CardPaymentForm from "@/components/checkout/CardPaymentForm";
+import { stripePromise } from "@/lib/stripe";
 
 export default function CheckoutPage() {
   const { items, clear } = useCart();
@@ -22,6 +25,8 @@ export default function CheckoutPage() {
   const [quote, setQuote] = useState<any>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [pendingOrder, setPendingOrder] = useState<{orderNumber: string; accessToken: string } | null>(null);
 
   const {
     register,
@@ -30,10 +35,11 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { country: "AE", email: user?.email ?? "" },
+    defaultValues: { country: "AE", email: user?.email ?? "", paymentMethod: "cash_on_delivery" },
   });
 
   const shippingMethodId = watch("shippingMethodId");
+  const paymentMethod = watch("paymentMethod");
 
   useEffect(() => {
     fetchStrapi<StrapiResponse<ShippingMethod>>("/shipping-methods", {
@@ -46,39 +52,54 @@ export default function CheckoutPage() {
     postStrapi("/checkout/quote", {
       items,
       shippingMethodId: shippingMethodId || undefined,
-      paymentMethod: "cash_on_delivery",
+      paymentMethod,
     })
       .then(setQuote)
       .catch(() => setQuote(null));
-  }, [items, shippingMethodId]);
+  }, [items, shippingMethodId, paymentMethod]);
 
   async function onSubmit(data: CheckoutFormData) {
     setError("");
     setSubmitting(true);
+    
+    const payload = {
+      items,
+      shippingMethodId: data.shippingMethodId,
+      contact: { email: data.email, name: data.name, phone: data.phone },
+      shippingAddress: {
+        fullName: data.name,
+        phone: data.phone,
+        line1: data.line1,
+        city: data.city,
+        region: data.region,
+        postalCode: data.postalCode,
+        country: data.country,
+      },
+    };
+
     try {
-      const result = await postStrapi<{ orderNumber: string, accessToken: string }>(
-        "/checkout/place-cod-order",
-        {
-          items,
-          shippingMethodId: data.shippingMethodId,
-          contact: { email: data.email, name: data.name, phone: data.phone },
-          shippingAddress: {
-            fullName: data.name,
-            phone: data.phone,
-            line1: data.line1,
-            line2: data.line2,
-            city: data.city,
-            region: data.region,
-            postalCode: data.postalCode,
-            country: data.country,
-          },
-        }
-      );
-      clear();
-      router.push(`/order/${result.orderNumber}?token=${result.accessToken}`);
-    } catch (err) {
+      if(data.paymentMethod  === "card") {
+        const result = await postStrapi<{
+          clientSecret: string;
+          orderNumber: string;
+          accessToken: string;
+        }>("/checkout/create-payment-intent", payload);
+        setPendingOrder({
+          orderNumber: result.orderNumber,
+          accessToken: result.accessToken,
+        });
+        setClientSecret(result.clientSecret);
+      } else {
+        const result = await postStrapi<{ orderNumber: string; accessToken: string }>(
+          "/checkout/place-cod-order",
+          payload,
+        );
+        clear();
+        router.push(`/order/${result.orderNumber}?token=${result.accessToken}`);
+      }
+    } catch(err) {
       setError(err instanceof Error ? err.message : "Order failed");
-    } finally {
+    } finally{
       setSubmitting(false);
     }
   }
@@ -87,6 +108,23 @@ export default function CheckoutPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center text-gray-500">
         Your cart is empty.
+      </div>
+    );
+  }
+
+  if(clientSecret && pendingOrder) {
+    const successUrl = `${window.location.origin}/order/${pendingOrder.orderNumber}?token=${pendingOrder.accessToken}`;
+
+    return (
+      <div className="mx-auto max-w-md px-4 py-10">
+        <h1 className="mb-2 text-2xl font-semibold">Payment</h1>
+        <p className="mb-6 text-sm text-gray-500">
+          Order {pendingOrder.orderNumber}
+          {quote ? ` . ${formatPrice(quote.total)}` : ""}
+        </p>
+        <Elements stripe={stripePromise} options={{clientSecret}}>
+          <CardPaymentForm successUrl={successUrl} onSuccess={clear}/>
+        </Elements>
       </div>
     );
   }
@@ -150,8 +188,15 @@ export default function CheckoutPage() {
         </div>
 
         <h2 className="mb-2 font-medium">Payment</h2>
-        <div className="mb-6 rounded border border-gray-300 px-3 py-2 text-sm">
-          Cash on delivery
+        <div className="mb-6 space-y-2">
+          <label className="flex items-center gap-3 rounded border border-gray-300 px-3 py-2 text-sm">
+            <input type="radio" value="cash_on_delivery" {...register("paymentMethod")} />
+            <span>Cash on delivery</span>
+          </label>
+          <label className="flex items-center gap-3 rounded border border-gray-300 px-3 py-2 text-sm">
+            <input type="radio" value="card" {...register("paymentMethod")} />
+            <span>Pay by card</span>
+          </label>
         </div>
       </div>
 
@@ -183,7 +228,7 @@ export default function CheckoutPage() {
         {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
 
         <Button type="submit" disabled={submitting} className="mt-5 w-full">
-          {submitting ? "Placing order…" : "Place order"}
+            {submitting ? "Processing…" : paymentMethod === "card" ? "Continue to payment" : "Place order"}
         </Button>
       </aside>
     </form>

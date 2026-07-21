@@ -12,6 +12,7 @@ export const checkoutSchema = z.object({
     postalCode: z.string().optional(),
     country: z.string().default("AE"),
     shippingMethodId: z.string().min(1, "Select a shipping method"),
+    paymentMethod: z.enum(["cash_on_delivery", "card"]),
 });
 
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;
