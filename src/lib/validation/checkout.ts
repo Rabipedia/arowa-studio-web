@@ -10,7 +10,7 @@ export const checkoutSchema = z.object({
     city: z.string().min(1, "City is required"),
     region: z.string().min(1, "Emirate is required"),
     postalCode: z.string().optional(),
-    country: z.string().default("AE"),
+    country: z.string(),
     shippingMethodId: z.string().min(1, "Select a shipping method"),
     paymentMethod: z.enum(["cash_on_delivery", "card"]),
 });
