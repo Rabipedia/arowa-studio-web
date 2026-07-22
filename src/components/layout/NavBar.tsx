@@ -44,7 +44,7 @@ export default function NavBar() {
 
                 <form
                     action="/shop"
-                    className="relative order-3 w-full sm:order-2 sm:w-auto sm:flex-1"
+                    className="relative order-3 w-full sm:order-2 sm:ml-auto sm:w-64 md:w-96"
                 >
                     <input
                         type="search"
