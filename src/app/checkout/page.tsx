@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
@@ -34,7 +34,7 @@ export default function CheckoutPage() {
     watch,
     formState: { errors },
   } = useForm<CheckoutFormData>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(checkoutSchema) as Resolver<CheckoutFormData>,
     defaultValues: { country: "AE", email: user?.email ?? "", paymentMethod: "cash_on_delivery" },
   });
 
