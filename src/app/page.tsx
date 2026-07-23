@@ -26,24 +26,47 @@ export default async function HomePage(){
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <HeroSlider banners={banners.data}/>
-      <section className="mb-12">
-        <h2 className="mb-4 text-2xl font-semibold">Shop by Category</h2>
+      <HeroSlider banners={banners.data} />
+
+      <section className="mb-16">
+        <h2 className="mb-6 font-display text-3xl font-semibold text-foreground">
+          Shop by Category
+        </h2>
         <ul className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-          {
-            categories.data.map((category) => (
-              <li
-                key={category.documentId}
-              >
-                <CategoryCard category={category}/>
-              </li>
-            ))
-          }
+          {categories.data.map((category) => (
+            <li key={category.documentId}>
+              <CategoryCard category={category} />
+            </li>
+          ))}
         </ul>
       </section>
 
-      <ProductSection title="Trending Products" products={trending.data}/>
-      <ProductSection title="Best Products" products={best.data}/>
+      <ProductSection title="Trending Products" products={trending.data} />
+      <ProductSection title="Best Products" products={best.data} />
     </div>
-  )
+  );
+}
+
+  // return (
+  //   <div className="mx-auto max-w-6xl px-4 py-10">
+  //     <HeroSlider banners={banners.data}/>
+  //     <section className="mb-12">
+  //       <h2 className="mb-4 text-2xl font-semibold">Shop by Category</h2>
+  //       <ul className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+  //         {
+  //           categories.data.map((category) => (
+  //             <li
+  //               key={category.documentId}
+  //             >
+  //               <CategoryCard category={category}/>
+  //             </li>
+  //           ))
+  //         }
+  //       </ul>
+  //     </section>
+
+  //     <ProductSection title="Trending Products" products={trending.data}/>
+  //     <ProductSection title="Best Products" products={best.data}/>
+  //   </div>
+  // )
 }
