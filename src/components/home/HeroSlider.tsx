@@ -1,77 +1,179 @@
+// 'use client';
+
+// import { mediaUrl } from "@/lib/strapi";
+// import type { HeroBanner  } from "@/types/catalog";
+// import Image from "next/image";
+// import Link from "next/link";
+// import { useEffect, useState } from "react";
+
+
+
+// export default function HeroSlider({ banners }: {banners: HeroBanner[]}) {
+//     const [index, setIndex] = useState(0);
+
+//     useEffect(() => {
+//         const timer = setInterval(() => {
+//             setIndex((i) => (i+1) % banners.length)
+//         }, 5000);
+//         return () => clearInterval(timer);
+//     }, [banners.length]);
+
+//     if(banners.length === 0) return null;
+
+//     const banner = banners[index];
+//     const next = () => setIndex((i) => (i+1) % banners.length);
+//     const prev = () => setIndex((i) => (i - 1 + banners.length) % banners.length);
+
+//     return (
+//         <section className="relative mb-12 h-80 w-full overflow-hidden rounded-lg">
+//             <Image
+//                 src={mediaUrl(banner.image.url)}
+//                 alt={banner.image.alternativeText ?? banner.title}
+//                 fill
+//                 className="object-cover"
+//                 priority={index === 0}          
+//             />
+//             <div className="absolute inset-0 flex flex-col justify-center bg-black/30 px-10 text-white">
+//                 <h2 className="text-3xl font-bold">{banner.title}</h2>
+//                 {banner.subtitle && <p className="mt-2 text-lg">{banner.subtitle}</p>}
+//                 {banner.linkUrl && (
+//                     <Link 
+//                         href={banner.linkUrl}
+//                         className="mt-4 w-fit rounded bg-white px-5 py-2 text-sm font-medium text-black"
+//                     >Shop now</Link>
+//                 )}
+//             </div>
+
+//             <button
+//                 onClick={prev}
+//                 aria-label="Previous slide"
+//                 className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/70 p-2"
+//             >
+//                 ‹
+//             </button>
+
+//             <button
+//                 onClick={next}
+//                 aria-label="Next slide"
+//                 className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/70 p-2"
+//             >
+//                 ›
+//             </button>
+
+//             <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+//                 {
+//                     banners.map((_, i) => (
+//                         <button
+//                             key={i}
+//                             onClick={()=> setIndex(i)}
+//                             aria-label={`Go to slide ${i + 1}`}
+//                             className={`h-2 w-2 rounded-full ${i === index ? 'bg-white' : 'bg-white/40'}`}
+//                         />
+//                     ))
+//                 }
+//             </div>
+//         </section>
+//     )
+// }
+
 'use client';
 
 import { mediaUrl } from "@/lib/strapi";
-import type { HeroBanner  } from "@/types/catalog";
+import type { HeroBanner } from "@/types/catalog";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-
-
-export default function HeroSlider({ banners }: {banners: HeroBanner[]}) {
+export default function HeroSlider({ banners }: { banners: HeroBanner[] }) {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
+        if (banners.length === 0) return;
         const timer = setInterval(() => {
-            setIndex((i) => (i+1) % banners.length)
+            setIndex((i) => (i + 1) % banners.length);
         }, 5000);
         return () => clearInterval(timer);
     }, [banners.length]);
 
-    if(banners.length === 0) return null;
+    if (banners.length === 0) {
+        return (
+            <section className="mb-12 flex h-72 w-full flex-col justify-center overflow-hidden rounded-2xl bg-deep px-8 text-white sm:h-96 sm:px-12">
+                <p className="mb-3 text-sm font-medium uppercase tracking-[0.2em] text-gold">
+                    Arowa Studio
+                </p>
+                <h2 className="max-w-xl font-display text-4xl font-semibold leading-tight sm:text-5xl">
+                    Illuminate your space
+                </h2>
+                <p className="mt-4 max-w-md text-base text-white/80">
+                    Statement chandeliers, pendant lights, and electrical accessories, delivered across the UAE.
+                </p>
+                <Link
+                    href="/shop"
+                    className="mt-6 w-fit rounded-md bg-gold px-6 py-3 text-sm font-semibold text-deep transition hover:bg-gold-hover"
+                >
+                    Shop the collection
+                </Link>
+            </section>
+        );
+    }
 
     const banner = banners[index];
-    const next = () => setIndex((i) => (i+1) % banners.length);
+    const next = () => setIndex((i) => (i + 1) % banners.length);
     const prev = () => setIndex((i) => (i - 1 + banners.length) % banners.length);
 
     return (
-        <section className="relative mb-12 h-80 w-full overflow-hidden rounded-lg">
+        <section className="relative mb-12 h-72 w-full overflow-hidden rounded-2xl sm:h-96">
             <Image
                 src={mediaUrl(banner.image.url)}
                 alt={banner.image.alternativeText ?? banner.title}
                 fill
                 className="object-cover"
-                priority={index === 0}          
+                priority={index === 0}
             />
-            <div className="absolute inset-0 flex flex-col justify-center bg-black/30 px-10 text-white">
-                <h2 className="text-3xl font-bold">{banner.title}</h2>
-                {banner.subtitle && <p className="mt-2 text-lg">{banner.subtitle}</p>}
+            <div className="absolute inset-0 flex flex-col justify-center bg-gradient-to-r from-black/70 via-black/40 to-transparent px-8 text-white sm:px-12">
+                <h2 className="max-w-xl font-display text-3xl font-semibold leading-tight sm:text-5xl">
+                    {banner.title}
+                </h2>
+                {banner.subtitle && (
+                    <p className="mt-3 max-w-md text-base text-white/85 sm:text-lg">
+                        {banner.subtitle}
+                    </p>
+                )}
                 {banner.linkUrl && (
-                    <Link 
+                    <Link
                         href={banner.linkUrl}
-                        className="mt-4 w-fit rounded bg-white px-5 py-2 text-sm font-medium text-black"
-                    >Shop now</Link>
+                        className="mt-6 w-fit rounded-md bg-gold px-6 py-3 text-sm font-semibold text-deep transition hover:bg-gold-hover"
+                    >
+                        Shop now
+                    </Link>
                 )}
             </div>
 
             <button
                 onClick={prev}
                 aria-label="Previous slide"
-                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/70 p-2"
+                className="absolute left-4 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-deep transition hover:bg-white"
             >
                 ‹
             </button>
-
             <button
                 onClick={next}
                 aria-label="Next slide"
-                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/70 p-2"
+                className="absolute right-4 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-deep transition hover:bg-white"
             >
                 ›
             </button>
 
             <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-                {
-                    banners.map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={()=> setIndex(i)}
-                            aria-label={`Go to slide ${i + 1}`}
-                            className={`h-2 w-2 rounded-full ${i === index ? 'bg-white' : 'bg-white/40'}`}
-                        />
-                    ))
-                }
+                {banners.map((_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setIndex(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        className={`h-2 rounded-full transition-all ${i === index ? "w-6 bg-gold" : "w-2 bg-white/50"}`}
+                    />
+                ))}
             </div>
         </section>
-    )
+    );
 }
