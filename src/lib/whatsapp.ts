@@ -1,4 +1,4 @@
-export const WHATAPP_NUMBER = "971504331603";
+export const WHATSAPP_NUMBER = "971504331603";
 
 
 export function whatsappUrl(message: string): string {

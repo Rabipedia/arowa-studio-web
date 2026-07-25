@@ -5,7 +5,7 @@ import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
-import WhatsAppButton from "@/components/layout/WhatsappButton";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
