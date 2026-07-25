@@ -180,7 +180,7 @@ export default function ProductView({ product }: { product: Product }) {
           </p>
         )}
 
-        <div className="mt-6 flex items-center gap-4">
+                <div className="mt-6 flex items-start gap-4">
           <div className="flex items-center rounded-md border border-line">
             <button
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -203,25 +203,29 @@ export default function ProductView({ product }: { product: Product }) {
             </button>
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!selectedVariant || selectedVariant.stock === 0}
-            className="flex-1 rounded-md bg-brand px-6 py-3 text-sm font-medium text-white transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
-          >
-           {added ? "Added to cart ✓" : "Add to cart"}
-            
-          </button>
+          <div className="flex flex-1 flex-col gap-3">
+            <button
+              onClick={handleAddToCart}
+              disabled={!selectedVariant || selectedVariant.stock === 0}
+              className="w-full rounded-md bg-brand px-6 py-3 text-sm font-medium text-white transition hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {added ? "Added to cart ✓" : "Add to cart"}
+            </button>
+
+            <a
+              href={whatsappUrl(
+                `Hi Arowa Studio, I'd like to order: ${product.name}` +
+                  (selectedVariant?.attributeValues?.length ? `(${selectedVariant.attributeValues.map((v) => v.value).join(", ")})`
+                : "") + (price !=null ? ` - ${formatPrice(price)}` : "")
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center rounded-md bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:brightness-95"
+            >
+              Order via WhatsApp
+            </a>
+          </div>
         </div>
-        <a
-          href={whatsappUrl(
-            `Hi Arowa Studio, I'd like to order: ${product.name}` + 
-              (selectedVariant?.attributeValues?.length ? `(${selectedVariant.attributeValues.map((v) => v.value).join(", ")})`
-            : "") + (price !=null ? ` - ${formatPrice(price)}` : "")
-          )}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-3 flex w-full items-center justify-center rounded bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:brightness-95"
-        >Order via WhatsApp</a>
       </div>
     </div>
   );
