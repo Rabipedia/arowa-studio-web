@@ -6,6 +6,7 @@ import type { Product, ProductVariant, Attribute, AttributeValue } from '@/types
 import { mediaUrl } from '@/lib/strapi';
 import { formatPrice } from '@/lib/format';
 import { useCart } from '@/context/CartContext';
+import { whatsappUrl } from '@/lib/whatsapp';
 
 type Selection = Record<string, string>;
 
@@ -211,6 +212,16 @@ export default function ProductView({ product }: { product: Product }) {
             
           </button>
         </div>
+        <a
+          href={whatsappUrl(
+            `Hi Arowa Studio, I'd like to order: ${product.name}` + 
+              (selectedVariant?.attributeValues?.length ? `(${selectedVariant.attributeValues.map((v) => v.value).join(", ")})`
+            : "") + (price !=null ? ` - ${formatPrice(price)}` : "")
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 flex w-full items-center justify-center rounded bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:brightness-95"
+        >Order via WhatsApp</a>
       </div>
     </div>
   );

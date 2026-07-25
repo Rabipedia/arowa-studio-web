@@ -1,10 +1,7 @@
-export default function WhatsAppButton() {
-    const number = "971504331603";
-    const text = encodeURIComponent(
-        "Hi Arowa Studio, I'd like to ask about a product."
-    );
-    const href= `https://wa.me/${number}?text=${text}`;
+import { whatsappUrl } from "@/lib/whatsapp"
 
+export default function WhatsAppButton() {
+    const href = whatsappUrl("Hi Arowa Studio, I'd like to ask you about a product.")
     return(
         <a
             href={href}
