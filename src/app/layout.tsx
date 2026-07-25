@@ -5,6 +5,7 @@ import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
+import WhatsAppButton from "@/components/layout/WhatsappButton";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -39,6 +40,7 @@ export default function RootLayout({
             <Footer/>
          </CartProvider>
         </AuthProvider>
+        <WhatsAppButton/>
       </body>
     </html>
   );
