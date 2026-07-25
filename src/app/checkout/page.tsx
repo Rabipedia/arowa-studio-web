@@ -193,10 +193,10 @@ export default function CheckoutPage() {
             <input type="radio" value="cash_on_delivery" {...register("paymentMethod")} />
             <span>Cash on delivery</span>
           </label>
-          <label className="flex items-center gap-3 rounded border border-gray-300 px-3 py-2 text-sm">
+          {/* <label className="flex items-center gap-3 rounded border border-gray-300 px-3 py-2 text-sm">
             <input type="radio" value="card" {...register("paymentMethod")} />
             <span>Pay by card</span>
-          </label>
+          </label> */}
         </div>
       </div>
 
