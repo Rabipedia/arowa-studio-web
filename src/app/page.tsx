@@ -4,7 +4,7 @@ import ProductSection from "@/components/product/ProductSection";
 import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse, Category, Product, HeroBanner } from "@/types/catalog";
 
-
+export const revalidate = false;
 export default async function HomePage(){
   const [categories, trending, best, banners] = await Promise.all([
     fetchStrapi<StrapiResponse<Category>>("/categories", { populate: "image"}),

@@ -5,6 +5,8 @@ import ProductView from "@/components/product/ProductView";
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
 
+export const revalidate = false;
+
 async function getProduct(slug: string): Promise<Product | null> {
     const res = await fetchStrapi<StrapiResponse<Product>>("/products", {
         "filters[slug][$eq]": slug,

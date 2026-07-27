@@ -5,7 +5,7 @@ import type { Category, Product, StrapiResponse } from "@/types/catalog";
 import Link from "next/link";
 import SortSelect from "@/components/shop/SortSelect";
 
-
+export const revalidate = false;
 const PAGE_SIZE = 12;
 
 const SORTS: Record<string, string> = {
