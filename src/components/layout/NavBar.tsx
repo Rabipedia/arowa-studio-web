@@ -47,7 +47,8 @@ export  default async function NavBar() {
                     <span className="text-brand">Arowa</span>{" "}
                     <span className="text-deep">Studio</span>
                 </Link>
-                <nav className="hidden items-center gap-6 text-sm md:flex">
+                
+                <nav className="order-2 hidden items-center gap-6 text-sm md:flex">
                 <Link href="/shop" className="text-foreground transition hover:text-brand">
                     All Products
                 </Link>
