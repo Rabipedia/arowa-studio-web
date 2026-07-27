@@ -29,8 +29,14 @@
 import Link from "next/link";
 import CartBadge from "./CartBadge";
 import AccountNav from "./AccountNav";
+import { fetchStrapi } from "@/lib/strapi";
+import type { StrapiResponse, Category } from "@/types/catalog";
 
-export default function NavBar() {
+export  default async function NavBar() {
+    const navCategories = await fetchStrapi<StrapiResponse<Category>>("/categories", {
+        "filters[showInNav][$eq]": "true",
+        sort: "navOrder:asc",
+    }).catch(() => ({data: [] as Category [] }));
     return (
         <header className="border-b border-line bg-surface">
             <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4">
@@ -41,6 +47,20 @@ export default function NavBar() {
                     <span className="text-brand">Arowa</span>{" "}
                     <span className="text-deep">Studio</span>
                 </Link>
+                <nav className="hidden items-center gap-6 text-sm md:flex">
+                <Link href="/shop" className="text-foreground transition hover:text-brand">
+                    All Products
+                </Link>
+                {navCategories.data.map((category) => (
+                    <Link
+                        key={category.documentId}
+                        href={`/shop?category=${category.slug}`}
+                        className="text-foreground transition hover:text-brand"
+                    >
+                        {category.name}
+                    </Link>
+                ))}
+                </nav>
 
                 <form
                     action="/shop"

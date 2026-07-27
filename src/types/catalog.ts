@@ -46,6 +46,8 @@ export interface Category extends StrapiEntity {
     description: string | null;
     image?: StrapiImage | null;
     parentCategory?: Category | null;
+    showInNav?: boolean;
+    navOrder?: number;
 }
 
 export interface Attribute extends StrapiEntity {
