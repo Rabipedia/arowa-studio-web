@@ -6,12 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { fetchStrapi, postStrapi } from "@/lib/strapi";
+import { postStrapi } from "@/lib/strapi";
 import { formatPrice } from "@/lib/format";
 import { checkoutSchema, type CheckoutFormData } from "@/lib/validation/checkout";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import type { StrapiResponse, ShippingMethod } from "@/types/catalog";
+// import type { StrapiResponse, ShippingMethod } from "@/types/catalog";
 import { Elements } from "@stripe/react-stripe-js";
 import CardPaymentForm from "@/components/checkout/CardPaymentForm";
 import { stripePromise } from "@/lib/stripe";
@@ -21,7 +21,7 @@ export default function CheckoutPage() {
   const { user } = useAuth();
   const router = useRouter();
 
-  const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
+  // const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
   const [quote, setQuote] = useState<any>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -38,25 +38,25 @@ export default function CheckoutPage() {
     defaultValues: { country: "AE", email: user?.email ?? "", paymentMethod: "cash_on_delivery" },
   });
 
-  const shippingMethodId = watch("shippingMethodId");
+  // const shippingMethodId = watch("shippingMethodId");
   const paymentMethod = watch("paymentMethod");
 
-  useEffect(() => {
-    fetchStrapi<StrapiResponse<ShippingMethod>>("/shipping-methods", {
-      "filters[isActive][$eq]": "true",
-    }).then((res) => setShippingMethods(res.data));
-  }, []);
+  // useEffect(() => {
+  //   fetchStrapi<StrapiResponse<ShippingMethod>>("/shipping-methods", {
+  //     "filters[isActive][$eq]": "true",
+  //   }).then((res) => setShippingMethods(res.data));
+  // }, []);
 
   useEffect(() => {
     if (items.length === 0) return;
     postStrapi("/checkout/quote", {
       items,
-      shippingMethodId: shippingMethodId || undefined,
+     // shippingMethodId: shippingMethodId || undefined,
       paymentMethod,
     })
       .then(setQuote)
       .catch(() => setQuote(null));
-  }, [items, shippingMethodId, paymentMethod]);
+  }, [items, paymentMethod]);
 
   async function onSubmit(data: CheckoutFormData) {
     setError("");
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
     
     const payload = {
       items,
-      shippingMethodId: data.shippingMethodId,
+      // shippingMethodId: data.shippingMethodId,
       contact: { email: data.email, name: data.name, phone: data.phone },
       shippingAddress: {
         fullName: data.name,
@@ -173,7 +173,7 @@ export default function CheckoutPage() {
           <Input placeholder="Postal code (optional)" {...register("postalCode")} />
         </div>
 
-        <h2 className="mb-2 font-medium">Shipping method</h2>
+        {/* <h2 className="mb-2 font-medium">Shipping method</h2>
         <div className="mb-6 space-y-2">
           {shippingMethods.map((m) => (
             <label key={m.documentId} className="flex items-center gap-3 rounded border border-gray-300 px-3 py-2 text-sm">
@@ -185,7 +185,7 @@ export default function CheckoutPage() {
           {errors.shippingMethodId && (
             <p className="text-sm text-red-500">{errors.shippingMethodId.message}</p>
           )}
-        </div>
+        </div> */}
 
         <h2 className="mb-2 font-medium">Payment</h2>
         <div className="mb-6 space-y-2">
@@ -212,8 +212,8 @@ export default function CheckoutPage() {
             ))}
             <div className="mt-3 border-t border-gray-200 pt-3 space-y-1">
               <Row label="Subtotal" value={quote.subtotal} />
-              <Row label="Shipping" value={quote.shippingCost} />
-              <Row label={`Tax (${quote.taxRatePercent}%)`} value={quote.taxAmount} />
+              {quote.shippingCost > 0 && <Row label="Shipping" value={quote.shippingCost} />}
+              {quote.taxAmount > 0 && <Row label={`Tax (${quote.taxRatePercent}%)`} value={quote.taxAmount} />}
               {quote.codFee > 0 && <Row label="COD fee" value={quote.codFee} />}
             </div>
             <div className="mt-3 flex justify-between border-t border-gray-200 pt-3 text-base font-semibold">

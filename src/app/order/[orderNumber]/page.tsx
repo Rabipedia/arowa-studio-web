@@ -104,13 +104,17 @@ export default function OrderPage() {
           <div className="flex justify-between">
             <span>Subtotal</span><span>{formatPrice(order.subtotal)}</span>
           </div>
+          {order.shippingCost > 0 && (
           <div className="flex justify-between">
             <span>Shipping{order.shippingMethodLabel ? ` (${order.shippingMethodLabel})` : ""}</span>
             <span>{formatPrice(order.shippingCost)}</span>
           </div>
+          )}
+          {order.taxAmount > 0 && (
           <div className="flex justify-between">
             <span>Tax</span><span>{formatPrice(order.taxAmount)}</span>
           </div>
+          )}
           {order.codFeeSnapshot ? (
             <div className="flex justify-between">
               <span>Cash on delivery fee</span><span>{formatPrice(order.codFeeSnapshot)}</span>
