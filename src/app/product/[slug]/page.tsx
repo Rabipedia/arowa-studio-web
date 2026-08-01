@@ -4,6 +4,9 @@ import ProductSection from "@/components/product/ProductSection";
 import ProductView from "@/components/product/ProductView";
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildProductJsonLd } from "@/lib/jsonLd";
 
 export const revalidate = false;
 
@@ -22,14 +25,15 @@ export async function generateMetadata({
     params,
 }: {
     params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
     const { slug } = await params;
     const product = await getProduct(slug);
-    if (!product) return { title: "Product not found!" };
+    if (!product) return { title: "Product not found" };
 
     return {
-        title: product.seoTitle ?? `${product.name} - Arowa Studio`,
+        title: product.seoTitle ? { absolute: product.seoTitle } : product.name,
         description: product.seoDescription ?? undefined,
+        alternates: { canonical: `/product/${slug}` },
     };
 }
 
@@ -51,6 +55,7 @@ export default async function ProductPage({
 
     return (
         <div className="mx-auto max-w-6xl px-4 py-10">
+            <JsonLd data={buildProductJsonLd(product)} />
             <p className="mb-6 text-sm text-muted">
                 Home / {product.category?.name ?? "Shop"} / {product.name}
             </p>

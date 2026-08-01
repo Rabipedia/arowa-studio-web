@@ -49,7 +49,7 @@ export default function Footer() {
                         <span className="text-gold">Studio</span>
                     </h3>
                     <p className="text-sm text-white/70">
-                        Lighting and electrical products for modern homes.
+                        Curated home and lifestyle products for modern living in the UAE.
                     </p>
                 </div>
                 <div>

@@ -3,6 +3,11 @@ import HeroSlider from "@/components/home/HeroSlider";
 import ProductSection from "@/components/product/ProductSection";
 import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse, Category, Product, HeroBanner } from "@/types/catalog";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export const revalidate = false;
 export default async function HomePage(){

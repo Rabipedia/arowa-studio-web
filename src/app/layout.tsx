@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -18,8 +19,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Arowa Studio",
-  description: "Chandeliers, pendant lights, sockets and electrical accessories in the UAE.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Home & Lifestyle Essentials in the UAE | Arowa Studio",
+    template: `%s | ${SITE_NAME}`,
+  },
+  description:
+    "Curated home and lifestyle products for modern UAE living. Decor, lighting, drinkware, accessories and more, with cash on delivery across Dubai and all Emirates.",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_AE",
+  },
 };
 
 export default function RootLayout({

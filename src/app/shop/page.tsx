@@ -4,6 +4,7 @@ import { fetchStrapi } from "@/lib/strapi";
 import type { Category, Product, StrapiResponse } from "@/types/catalog";
 import Link from "next/link";
 import SortSelect from "@/components/shop/SortSelect";
+import type { Metadata } from "next";
 
 export const revalidate = false;
 const PAGE_SIZE = 12;
@@ -16,6 +17,55 @@ const SORTS: Record<string, string> = {
 
 function first(value: string | string[] | undefined): string | undefined {
     return Array.isArray(value) ? value[0] : value;
+}
+
+export async function generateMetadata({
+    searchParams,
+}: {
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+    const sp = await searchParams;
+    const categorySlug = first(sp.category);
+    const search = first(sp.search);
+    const page = first(sp.page);
+
+    if (search) {
+        return {
+            title: `Search results for "${search}"`,
+            robots: { index: false, follow: true },
+        };
+    }
+
+    const params = new URLSearchParams();
+    if (categorySlug) params.set("category", categorySlug);
+    if (page && page !== "1") params.set("page", page);
+    const query = params.toString();
+    const canonical = query ? `/shop?${query}` : "/shop";
+
+    if (!categorySlug) {
+        return {
+            title: "Shop All Products",
+            description:
+                "Browse the full Arowa Studio collection. Home, decor, lighting, drinkware and more, with cash on delivery across the UAE.",
+            alternates: { canonical },
+        };
+    }
+
+    const categories = await fetchStrapi<StrapiResponse<Category>>("/categories", {
+        "filters[slug][$eq]": categorySlug,
+        "fields[0]": "name",
+        "fields[1]": "description",
+    });
+    const category = categories.data[0];
+    if (!category) return { title: "Shop", alternates: { canonical } };
+
+    return {
+        title: `${category.name} in the UAE`,
+        description:
+            category.description ??
+            `Shop ${category.name.toLowerCase()} at Arowa Studio. Delivered across Dubai and all Emirates with cash on delivery.`,
+        alternates: { canonical },
+    };
 }
 
 export default async function ShopPage({
