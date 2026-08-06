@@ -5,6 +5,7 @@ import type { Category, Product, StrapiResponse } from "@/types/catalog";
 import Link from "next/link";
 import SortSelect from "@/components/shop/SortSelect";
 import type { Metadata } from "next";
+import type { Guide } from "@/types/guide";
 
 export const revalidate = false;
 const PAGE_SIZE = 12;
@@ -17,6 +18,11 @@ const SORTS: Record<string, string> = {
 
 function first(value: string | string[] | undefined): string | undefined {
     return Array.isArray(value) ? value[0] : value;
+}
+
+function metaDescription(text: string, max = 155): string {
+    if (text.length <= max) return text;
+    return text.slice(0, text.lastIndexOf(" ", max)) + "…";
 }
 
 export async function generateMetadata({
@@ -61,10 +67,9 @@ export async function generateMetadata({
 
     return {
         title: `${category.name} in the UAE`,
-        description:
-            category.description ??
-            `Shop ${category.name.toLowerCase()} at Arowa Studio. Delivered across Dubai and all Emirates with cash on delivery.`,
-        alternates: { canonical },
+        description: category.description
+            ? metaDescription(category.description)
+            : `Shop ${category.name.toLowerCase()} at Arowa Studio. Delivered across Dubai and all Emirates with cash on delivery.`,
     };
 }
 
@@ -102,24 +107,59 @@ export default async function ShopPage({
 
     const { page: current, pageCount, total } = products.meta.pagination;
 
+    const activeCategory = category
+    ? categories.data.find((c) => c.slug === category)
+    : undefined;
+
+    const guide = category
+        ? (
+            await fetchStrapi<StrapiResponse<Guide>>("/guides", {
+                "filters[category][slug][$eq]": category,
+                "fields[0]": "slug",
+                "fields[1]": "title",
+                "pagination[pageSize]": "1",
+            })
+        ).data[0] ?? null
+    : null;
+
     return(
         <div className="mx-auto max-w-6xl px-4 py-10">
             <div className="flex flex-col gap-8 md:flex-row">
                 <FilterBar categories={categories.data}/>
 
                 <div className="flex-1">
-                    <div className="mb-6 flex items-center justify-between">
-                        <div>
-                            <h1 className="font-display text-3xl font-semibold text-foreground">
-                                {
-                                    category ? categories.data.find((c) => c.slug === category)?.name ?? "Shop"
-                                        : search ?  `Results for "${search}"` : "All Products"
-                                }
-                            </h1>
-                            <p className="text-sm text-muted">{total} products</p>
-                        </div>
-                        <SortSelect/>
-                    </div>
+                    // WITH THIS:
+<div className="mb-6">
+    <div className="flex items-center justify-between">
+        <div>
+            <h1 className="font-display text-3xl font-semibold text-foreground">
+                {category
+                    ? activeCategory?.name ?? "Shop"
+                    : search
+                      ? `Results for "${search}"`
+                      : "All Products"}
+            </h1>
+            <p className="text-sm text-muted">{total} products</p>
+        </div>
+        <SortSelect/>
+    </div>
+
+    {activeCategory?.description && (
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">
+            {activeCategory.description}
+        </p>
+    )}
+    {guide && (
+        <p className="mt-3 text-sm">
+            <Link
+                href={`/guide/${guide.slug}`}
+                className="text-brand underline underline-offset-4 hover:text-brand-hover"
+            >
+                {guide.title}
+            </Link>
+        </p>
+    )}
+</div>
                     {
                         products.data.length === 0 ? (
                             <p className="py-16 text-center text-muted">No products match your filters.</p>

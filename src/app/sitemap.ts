@@ -2,11 +2,12 @@ import type { MetadataRoute } from "next";
 import { fetchStrapi } from "@/lib/strapi";
 import { absoluteUrl } from "@/lib/seo";
 import type { Category, Product, StrapiResponse } from "@/types/catalog";
+import type { Guide } from "@/types/guide";
 
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
+  const [products, categories, guideList] = await Promise.all([
     fetchStrapi<StrapiResponse<Product>>("/products", {
       "filters[isActive][$eq]": "true",
       "fields[0]": "slug",
@@ -14,6 +15,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       "pagination[pageSize]": "100",
     }),
     fetchStrapi<StrapiResponse<Category>>("/categories", {
+      "fields[0]": "slug",
+      "fields[1]": "updatedAt",
+      "pagination[pageSize]": "100",
+    }),
+    fetchStrapi<StrapiResponse<Guide>>("/guides", {
       "fields[0]": "slug",
       "fields[1]": "updatedAt",
       "pagination[pageSize]": "100",
@@ -49,5 +55,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes];
+  const guideRoutes: MetadataRoute.Sitemap = guideList.data.map((g) => ({
+    url: absoluteUrl(`/guide/${g.slug}`),
+    lastModified: new Date(g.updatedAt),
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
+  return [...staticRoutes, ...categoryRoutes, ...guideRoutes, ...productRoutes];
 }
