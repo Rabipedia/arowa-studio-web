@@ -100,66 +100,65 @@ export default async function ShopPage({
     if(maxPrice) query["filters[displayPrice][$lte]"] = maxPrice;
     if(onSale) query["filters[variants][discountPrice][$notNull]"] = "true";
 
-    const [products, categories] = await Promise.all([
+    const [products, categories, guides] = await Promise.all([
         fetchStrapi<StrapiResponse<Product>>("/products", query),
-        fetchStrapi<StrapiResponse<Category>>("/categories", )
+        fetchStrapi<StrapiResponse<Category>>("/categories"),
+        category
+            ? fetchStrapi<StrapiResponse<Guide>>("/guides", {
+                  "filters[category][slug][$eq]": category,
+                  "fields[0]": "slug",
+                  "fields[1]": "title",
+                  "pagination[pageSize]": "1",
+              })
+            : Promise.resolve(null),
     ]);
 
     const { page: current, pageCount, total } = products.meta.pagination;
 
     const activeCategory = category
-    ? categories.data.find((c) => c.slug === category)
-    : undefined;
+        ? categories.data.find((c) => c.slug === category)
+        : undefined;
 
-    const guide = category
-        ? (
-            await fetchStrapi<StrapiResponse<Guide>>("/guides", {
-                "filters[category][slug][$eq]": category,
-                "fields[0]": "slug",
-                "fields[1]": "title",
-                "pagination[pageSize]": "1",
-            })
-        ).data[0] ?? null
-    : null;
+    const guide = guides?.data[0] ?? null;
 
     return(
         <div className="mx-auto max-w-6xl px-4 py-10">
             <div className="flex flex-col gap-8 md:flex-row">
                 <FilterBar categories={categories.data}/>
 
-                <div className="flex-1">
-                    // WITH THIS:
-<div className="mb-6">
-    <div className="flex items-center justify-between">
-        <div>
-            <h1 className="font-display text-3xl font-semibold text-foreground">
-                {category
-                    ? activeCategory?.name ?? "Shop"
-                    : search
-                      ? `Results for "${search}"`
-                      : "All Products"}
-            </h1>
-            <p className="text-sm text-muted">{total} products</p>
-        </div>
-        <SortSelect/>
-    </div>
+                                <div className="flex-1">
+                    <div className="mb-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h1 className="font-display text-3xl font-semibold text-foreground">
+                                    {category
+                                        ? activeCategory?.name ?? "Shop"
+                                        : search
+                                          ? `Results for "${search}"`
+                                          : "All Products"}
+                                </h1>
+                                <p className="text-sm text-muted">{total} products</p>
+                            </div>
+                            <SortSelect/>
+                        </div>
 
-    {activeCategory?.description && (
-        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">
-            {activeCategory.description}
-        </p>
-    )}
-    {guide && (
-        <p className="mt-3 text-sm">
-            <Link
-                href={`/guide/${guide.slug}`}
-                className="text-brand underline underline-offset-4 hover:text-brand-hover"
-            >
-                {guide.title}
-            </Link>
-        </p>
-    )}
-</div>
+                        {activeCategory?.description && (
+                            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">
+                                {activeCategory.description}
+                            </p>
+                        )}
+
+                        {guide && (
+                            <p className="mt-3 text-sm">
+                                <Link
+                                    href={`/guide/${guide.slug}`}
+                                    className="text-brand underline underline-offset-4 hover:text-brand-hover"
+                                >
+                                    {guide.title}
+                                </Link>
+                            </p>
+                        )}
+                    </div>
                     {
                         products.data.length === 0 ? (
                             <p className="py-16 text-center text-muted">No products match your filters.</p>

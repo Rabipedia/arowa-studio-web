@@ -6,7 +6,7 @@ import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse } from "@/types/catalog";
 import type { Guide } from "@/types/guide";
 
-export const revalidate = 3600;
+export const revalidate = false;
 
 async function getGuide(slug: string): Promise<Guide | null> {
     const res = await fetchStrapi<StrapiResponse<Guide>>("/guides", {
