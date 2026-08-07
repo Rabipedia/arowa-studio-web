@@ -70,6 +70,7 @@ export async function generateMetadata({
         description: category.description
             ? metaDescription(category.description)
             : `Shop ${category.name.toLowerCase()} at Arowa Studio. Delivered across Dubai and all Emirates with cash on delivery.`,
+            alternates: { canonical },
     };
 }
 
