@@ -6,6 +6,7 @@ import Link from "next/link";
 import SortSelect from "@/components/shop/SortSelect";
 import type { Metadata } from "next";
 import type { Guide } from "@/types/guide";
+import MobileFilterBar from "@/components/shop/MobileFilterBar";
 
 export const revalidate = false;
 const PAGE_SIZE = 12;
@@ -122,44 +123,31 @@ export default async function ShopPage({
 
     const guide = guides?.data[0] ?? null;
 
-    return(
+        return(
         <div className="mx-auto max-w-6xl px-4 py-10">
+            <div className="mb-5">
+                <h1 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
+                    {category
+                        ? activeCategory?.name ?? "Shop"
+                        : search
+                          ? `Results for "${search}"`
+                          : "All Products"}
+                </h1>
+                <p className="text-sm text-muted">{total} products</p>
+            </div>
+
+            <MobileFilterBar categories={categories.data} />
+
             <div className="flex flex-col gap-8 md:flex-row">
-                <FilterBar categories={categories.data}/>
+                <div className="hidden md:block">
+                    <FilterBar categories={categories.data}/>
+                </div>
 
-                                <div className="flex-1">
-                    <div className="mb-6">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <h1 className="font-display text-3xl font-semibold text-foreground">
-                                    {category
-                                        ? activeCategory?.name ?? "Shop"
-                                        : search
-                                          ? `Results for "${search}"`
-                                          : "All Products"}
-                                </h1>
-                                <p className="text-sm text-muted">{total} products</p>
-                            </div>
-                            <SortSelect/>
-                        </div>
-
-                        {activeCategory?.description && (
-                            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted">
-                                {activeCategory.description}
-                            </p>
-                        )}
-
-                        {guide && (
-                            <p className="mt-3 text-sm">
-                                <Link
-                                    href={`/guide/${guide.slug}`}
-                                    className="text-brand underline underline-offset-4 hover:text-brand-hover"
-                                >
-                                    {guide.title}
-                                </Link>
-                            </p>
-                        )}
+                <div className="flex-1">
+                    <div className="mb-5 hidden justify-end md:flex">
+                        <SortSelect/>
                     </div>
+
                     {
                         products.data.length === 0 ? (
                             <p className="py-16 text-center text-muted">No products match your filters.</p>
@@ -175,7 +163,8 @@ export default async function ShopPage({
                             </ul>
                         )
                     }
-                    { 
+
+                    {
                         pageCount > 1 && (
                             <div className="mt-10 flex justify-center gap-2">
                                 {
@@ -186,6 +175,23 @@ export default async function ShopPage({
                             </div>
                         )
                     }
+
+                    {activeCategory?.description && (
+                        <p className="mt-12 max-w-3xl text-sm leading-relaxed text-muted">
+                            {activeCategory.description}
+                        </p>
+                    )}
+
+                    {guide && (
+                        <p className="mt-3 text-sm">
+                            <Link
+                                href={`/guide/${guide.slug}`}
+                                className="text-brand underline underline-offset-4 hover:text-brand-hover"
+                            >
+                                {guide.title}
+                            </Link>
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

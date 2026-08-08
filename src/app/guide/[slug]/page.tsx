@@ -53,7 +53,7 @@ export default async function GuidePage({
 
     return (
         <article className="mx-auto max-w-3xl px-4 py-12">
-            <h1 className="font-display text-4xl font-semibold text-foreground">
+            <h1 className="font-display text-3xl font-semibold sm:text-4xl lg:text-5xl">
                 {guide.title}
             </h1>
             <p className="mt-2 text-xs text-muted">
