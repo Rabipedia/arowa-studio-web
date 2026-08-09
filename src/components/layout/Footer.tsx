@@ -60,7 +60,10 @@ export default function Footer() {
                 </div>
                 <div>
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gold">Customer Service</h3>
-                    <ul className="space-y-2 text-sm text-white/70">
+                                        <ul className="space-y-2 text-sm text-white/70">
+                        <li><Link href="/returns" className="transition hover:text-white">Returns &amp; Refunds</Link></li>
+                        <li><Link href="/shipping" className="transition hover:text-white">Shipping</Link></li>
+                        <li><Link href="/contact" className="transition hover:text-white">Contact</Link></li>
                         <li><Link href="/track-order" className="transition hover:text-white">Track Order</Link></li>
                     </ul>
                 </div>
