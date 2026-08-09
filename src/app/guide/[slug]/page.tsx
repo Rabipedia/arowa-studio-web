@@ -76,7 +76,7 @@ export default async function GuidePage({
                     <h2 className="mb-3 font-display text-2xl font-semibold text-foreground">
                         {section.heading}
                     </h2>
-                    <div className="prose prose-sm max-w-none text-muted">
+                    <div className="prose prose-sm max-w-none text-foreground">
                         <ReactMarkdown>{section.body}</ReactMarkdown>
                     </div>
                 </section>
@@ -92,7 +92,7 @@ export default async function GuidePage({
                             <h3 className="mb-1 text-sm font-semibold text-foreground">
                                 {item.question}
                             </h3>
-                            <p className="text-sm leading-relaxed text-muted">
+                            <p className="text-sm leading-relaxed text-foreground">
                                 {item.answer}
                             </p>
                         </div>
