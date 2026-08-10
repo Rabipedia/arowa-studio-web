@@ -31,6 +31,7 @@ export default async function HomePage(){
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
+      <JsonLd data={buildLocalBusinessJsonLd()} />
       <HeroSlider banners={banners.data} />
 
       <section className="mb-16">
