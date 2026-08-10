@@ -1,7 +1,13 @@
-import { absoluteUrl } from "@/lib/seo";
 import { mediaUrl } from "@/lib/strapi";
 import type { Product } from "@/types/catalog";
 import { deriveOffer, productDescription } from "@/lib/product";
+import {
+  absoluteUrl,
+  BUSINESS_ADDRESS,
+  BUSINESS_PHONE_E164,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo";
 
 
 export function buildProductJsonLd(product: Product): Record<string, unknown> {
@@ -46,4 +52,45 @@ export function buildProductJsonLd(product: Product): Record<string, unknown> {
   }
 
   return jsonLd;
+}
+
+export function buildLocalBusinessJsonLd(): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HomeGoodsStore",
+    name: SITE_NAME,
+    url: SITE_URL,
+    telephone: BUSINESS_PHONE_E164,
+    priceRange: "AED 25 - AED 500",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: BUSINESS_ADDRESS.street,
+      addressLocality: BUSINESS_ADDRESS.locality,
+      addressRegion: BUSINESS_ADDRESS.region,
+      addressCountry: BUSINESS_ADDRESS.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 25.175663721802216,
+      longitude: 55.412400023833726,
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "10:00",
+      closes: "22:00",
+    },
+    sameAs: [
+      "REPLACE_GOOGLE_BUSINESS_PROFILE_URL",
+      "https://www.trustpilot.com/review/arowastudio.com",
+    ],
+  };
 }

@@ -1,43 +1,9 @@
-// import Link from "next/link";
-
-// export default function Footer() {
-//     return (
-//         <footer className="mt-16 border-t border-gray-200">
-//             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 md:grid-cols-4">
-//                 <div>
-//                     <h3 className="mb-3 font-semibold">Arowa Studio</h3>
-//                     <p className="text-sm text-gray-600">
-//                         Lighting and electrical products for modern homes.
-//                     </p>
-//                 </div>
-//                 <div>
-//                     <h3 className="mb-3 font-semibold">Shop</h3>
-//                     <ul className="space-y-2 text-sm text-gray-600">
-//                         <li><Link href="/shop">All Products</Link></li>
-//                     </ul>
-//                 </div>
-//                 <div>
-//                     <h3 className="mb-3 font-semibold">Customer Service</h3>
-//                     <ul className="space-y-2 text-sm text-gray-600">
-//                         <li><Link href="/track-order">Track Order</Link></li>
-//                     </ul>
-//                 </div>
-//                 <div>
-//                     <h3 className="mb-3 font-semibold">Account</h3>
-//                     <ul className="space-y-2 text-sm text-gray-600">
-//                         <li><Link href="/auth/login">Sign in</Link></li>
-//                         <li><Link href="/auth/register">Register</Link></li>
-//                     </ul>
-//                 </div>
-//             </div>
-//             <div className="border-t border-gray-100 py-4 text-center text-xs text-gray-500">
-//                 © 2026 Arowa Studio
-//             </div>
-//         </footer>
-//     )
-// }
-
 import Link from "next/link";
+import {
+  BUSINESS_ADDRESS,
+  BUSINESS_PHONE_DISPLAY,
+  BUSINESS_PHONE_E164,
+} from "@/lib/seo";
 
 export default function Footer() {
     return (
@@ -51,6 +17,16 @@ export default function Footer() {
                     <p className="text-sm text-white/70">
                         Curated home and lifestyle products for modern living in the UAE.
                     </p>
+                    <address className="mt-4 text-sm not-italic leading-relaxed text-white/70">
+                        {BUSINESS_ADDRESS.street}<br />
+                        {BUSINESS_ADDRESS.locality}, {BUSINESS_ADDRESS.region}<br />
+                        <a
+                            href={`tel:${BUSINESS_PHONE_E164}`}
+                            className="transition hover:text-white"
+                        >
+                            {BUSINESS_PHONE_DISPLAY}
+                        </a>
+                    </address>
                 </div>
                 <div>
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gold">Shop</h3>
