@@ -4,6 +4,8 @@ import ProductSection from "@/components/product/ProductSection";
 import { fetchStrapi } from "@/lib/strapi";
 import type { StrapiResponse, Category, Product, HeroBanner } from "@/types/catalog";
 import type { Metadata } from "next";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildLocalBusinessJsonLd } from "@/lib/jsonLd";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },

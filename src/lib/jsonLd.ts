@@ -89,7 +89,7 @@ export function buildLocalBusinessJsonLd(): Record<string, unknown> {
       closes: "22:00",
     },
     sameAs: [
-      "REPLACE_GOOGLE_BUSINESS_PROFILE_URL",
+      "https://maps.app.goo.gl/59D8HG2xmSGAeW8Y9",
       "https://www.trustpilot.com/review/arowastudio.com",
     ],
   };
