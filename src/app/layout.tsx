@@ -7,6 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -53,6 +54,9 @@ export default function RootLayout({
         </AuthProvider>
         <WhatsAppButton/>
       </body>
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+      )}
     </html>
   );
 }
