@@ -23,6 +23,8 @@ export async function POST(request: Request) {
     if (model === "product" && slug) {
         revalidatePath(`/product/${slug}`);
         revalidated.push(`/product/${slug}`);
+        revalidatePath("/feed.xml");
+        revalidated.push("/feed.xml");
     }
 
     if (model === "guide" && slug) {
