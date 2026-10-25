@@ -50,7 +50,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (items.length === 0) return;
-        postStrapi<Quote>("/checkout/quote", {
+      postStrapi<Quote>("/checkout/quote", {
       items,
      // shippingMethodId: shippingMethodId || undefined,
       paymentMethod,

@@ -78,7 +78,6 @@ export interface Product extends StrapiEntity {
     slug: string;
     description: string | null;
     isActive: boolean;
-    displayOrder: number | null;
     seoTitle: string | null;
     seoDescription: string | null;
     displayPrice: number | null;
