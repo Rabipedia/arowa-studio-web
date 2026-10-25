@@ -26,6 +26,7 @@ export function CartProvider ({children} : {children: React.ReactNode} ) {
         const stored = localStorage.getItem(STORAGE_KEY);
         if(stored) {
             try{
+                // eslint-disable-next-line react-hooks/set-state-in-effect -- standard localStorage hydration on mount
                 setItems(JSON.parse(stored));
             } catch {
                 // corrupt value

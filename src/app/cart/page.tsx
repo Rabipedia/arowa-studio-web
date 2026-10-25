@@ -16,6 +16,7 @@ export default function CartPage() {
 
     useEffect(() => {
         if(items.length === 0) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- empty-cart guard; no external system to sync with
             setVariants([]);
             setLoading(false);
             return;

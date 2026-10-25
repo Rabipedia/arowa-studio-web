@@ -50,6 +50,7 @@ export default function OrderPage() {
 
   useEffect(() => {
     if (!token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- no token means nothing to fetch; stop loading immediately
       setLoading(false);
       return;
     }
