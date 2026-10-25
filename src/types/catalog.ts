@@ -78,6 +78,7 @@ export interface Product extends StrapiEntity {
     slug: string;
     description: string | null;
     isActive: boolean;
+    displayOrder: number | null;
     seoTitle: string | null;
     seoDescription: string | null;
     displayPrice: number | null;
@@ -110,4 +111,21 @@ export interface ShippingMethod extends StrapiEntity {
     cost: number;
     estimatedDays: string | null;
     isActive: boolean;
+}
+
+export interface QuoteLine {
+    variantId: string;
+    productName: string;
+    quantity: number;
+    lineTotal: number;
+}
+
+export interface Quote {
+    lines: QuoteLine[];
+    subtotal: number;
+    shippingCost: number;
+    taxAmount: number;
+    taxRatePercent: number;
+    codFee: number;
+    total: number;
 }

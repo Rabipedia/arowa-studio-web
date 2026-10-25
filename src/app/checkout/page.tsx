@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { postStrapi } from "@/lib/strapi";
 import { formatPrice } from "@/lib/format";
 import { checkoutSchema, type CheckoutFormData } from "@/lib/validation/checkout";
+import type { Quote } from "@/types/catalog";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 // import type { StrapiResponse, ShippingMethod } from "@/types/catalog";
@@ -22,7 +23,7 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   // const [shippingMethods, setShippingMethods] = useState<ShippingMethod[]>([]);
-  const [quote, setQuote] = useState<any>(null);
+  const [quote, setQuote] = useState<Quote | null>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (items.length === 0) return;
-    postStrapi("/checkout/quote", {
+        postStrapi<Quote>("/checkout/quote", {
       items,
      // shippingMethodId: shippingMethodId || undefined,
       paymentMethod,
@@ -204,7 +205,7 @@ export default function CheckoutPage() {
         <h2 className="mb-4 font-medium">Order summary</h2>
         {quote ? (
           <div className="space-y-2 text-sm">
-            {quote.lines.map((l: any) => (
+            {quote.lines.map((l) => (
               <div key={l.variantId} className="flex justify-between">
                 <span>{l.productName} × {l.quantity}</span>
                 <span>{formatPrice(l.lineTotal)}</span>
