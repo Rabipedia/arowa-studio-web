@@ -82,7 +82,7 @@ export default async function GuidePage({
                             controls
                             playsInline
                             preload="metadata"
-                            className="mb-4 w-full rounded-xl border border-line"
+                            className="mx-auto mb-4 max-h-[70vh] w-auto max-w-full rounded-xl border border-line"
                         />
                     )}
                     <div className="prose prose-sm max-w-none text-foreground">
