@@ -76,6 +76,15 @@ export default async function GuidePage({
                     <h2 className="mb-3 font-display text-2xl font-semibold text-foreground">
                         {section.heading}
                     </h2>
+                    {section.videoUrl && (
+                        <video
+                            src={section.videoUrl}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="mb-4 w-full rounded-xl border border-line"
+                        />
+                    )}
                     <div className="prose prose-sm max-w-none text-foreground">
                         <ReactMarkdown>{section.body}</ReactMarkdown>
                     </div>

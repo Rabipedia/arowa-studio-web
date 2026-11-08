@@ -4,6 +4,7 @@ export interface GuideSection {
     id: number;
     heading: string;
     body: string;
+    videoUrl?: string | null;
 }
 
 export interface GuideFaq {
