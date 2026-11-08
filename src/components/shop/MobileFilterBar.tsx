@@ -24,7 +24,7 @@ function Chip({
     return (
         <button
             onClick={onClick}
-            className={`shrink-0 rounded-full border px-4 py-1.5 text-sm transition ${
+            className={`max-w-[8rem] truncate rounded-full border px-3 py-1.5 text-xs transition ${
                 active
                     ? "border-brand bg-brand text-white"
                     : "border-line bg-surface text-foreground"
@@ -53,7 +53,7 @@ export default function MobileFilterBar({ categories }: { categories: Category[]
 
     return (
         <div className="md:hidden">
-            <div className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1">
+            <div className="mb-5 flex flex-wrap gap-2">
                 <Chip active={!!currentCategory} onClick={() => setSheet("category")}>
                     {activeCategoryName}
                 </Chip>

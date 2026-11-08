@@ -95,7 +95,7 @@ export interface HeroBanner extends StrapiEntity {
     subtitle: string | null;
     image: StrapiImage;
     linkUrl: string | null;
-    displayOrder: number;
+    displayOrder: number | null;
 }
 
 export interface ShippingMethod extends StrapiEntity {

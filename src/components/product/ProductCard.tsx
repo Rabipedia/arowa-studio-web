@@ -22,7 +22,7 @@ export default function ProductCard({ product }: { product: Product }) {
     return (
         <Link
             href={`/product/${product.slug}`}
-            className="group block overflow-hidden rounded-xl border border-line bg-surface transition hover:shadow-md"
+            className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition hover:shadow-md"
         >
             <div className="relative aspect-square w-full overflow-hidden bg-background">
                 {image ? (
@@ -40,19 +40,19 @@ export default function ProductCard({ product }: { product: Product }) {
                     </div>
                 )}
                 {originalPrice != null && (
-                    <span className="absolute left-3 top-3 rounded-md bg-brand px-2 py-1 text-xs font-semibold text-white">
+                    <span className="absolute left-2 top-2 rounded-md bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-white sm:left-3 sm:top-3 sm:px-2 sm:py-1 sm:text-xs">
                         -{discountPercent}%
                     </span>
                 )}
             </div>
 
-            <div className="p-4">
-                <h3 className="mb-1 line-clamp-2 text-sm font-medium text-foreground">
+            <div className="flex flex-1 flex-col p-2.5 sm:p-4">
+                <h3 className="mb-1 line-clamp-2 min-h-[2rem] text-xs font-medium leading-4 text-foreground sm:min-h-[2.5rem] sm:text-sm sm:leading-5">
                     {product.name}
                 </h3>
 
                 {hasRating && (
-                    <p className="mb-1 flex items-center gap-1 text-xs text-muted">
+                    <p className="mb-1 flex items-center gap-1 text-[10px] text-muted sm:text-xs">
                         <span className="text-gold">★</span>
                         <span className="font-medium text-foreground">
                             {product.averageRating!.toFixed(1)}
@@ -61,20 +61,22 @@ export default function ProductCard({ product }: { product: Product }) {
                     </p>
                 )}
 
-                {price != null ? (
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-base font-semibold text-deep">
-                            {formatPrice(price)}
-                        </span>
-                        {originalPrice != null && (
-                            <span className="text-sm text-muted line-through">
-                                {formatPrice(originalPrice)}
+                <div className="mt-auto">
+                    {price != null ? (
+                        <div className="flex items-baseline gap-1.5 sm:gap-2">
+                            <span className="text-sm font-semibold text-deep sm:text-base">
+                                {formatPrice(price)}
                             </span>
-                        )}
-                    </div>
-                ) : (
-                    <p className="text-sm text-muted">Price unavailable</p>
-                )}
+                            {originalPrice != null && (
+                                <span className="text-[11px] text-muted line-through sm:text-sm">
+                                    {formatPrice(originalPrice)}
+                                </span>
+                            )}
+                        </div>
+                    ) : (
+                        <p className="text-xs text-muted sm:text-sm">Price unavailable</p>
+                    )}
+                </div>
             </div>
         </Link>
     );
