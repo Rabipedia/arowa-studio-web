@@ -49,4 +49,14 @@ body {
   }
 }
 
-
+@layer base {
+  .prose img {
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    width: 100%;
+    max-width: 32rem;
+    margin-inline: auto;
+    border-radius: 0.75rem;
+    background-color: color-mix(in srgb, var(--deep) 5%, transparent);
+  }
+}
