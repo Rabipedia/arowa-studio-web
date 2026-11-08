@@ -23,7 +23,7 @@ export default async function HomePage() {
     fetchStrapi<StrapiResponse<Product>>("/products", {
       "filters[isActive][$eq]": "true",
       "pagination[pageSize]": "20",
-      sort: "displayOrder:asc,createdAt:desc",
+      sort: "displayOrder:desc,createdAt:desc",
       "populate[images]": "true",
     }),
     fetchStrapi<StrapiResponse<HeroBanner>>("/hero-banners", {
