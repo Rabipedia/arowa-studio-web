@@ -14,16 +14,25 @@ export const metadata: Metadata = {
 
 export const revalidate = false;
 
+const HOME_PRODUCT_COUNT = 20;
+
 export default async function HomePage() {
-  const [categories, products, banners] = await Promise.all([
+  const [categories, featured, recent, banners] = await Promise.all([
     fetchStrapi<StrapiResponse<Category>>("/categories", {
       populate: "image",
       sort: "navOrder:asc",
     }),
     fetchStrapi<StrapiResponse<Product>>("/products", {
       "filters[isActive][$eq]": "true",
-      "pagination[pageSize]": "20",
-      sort: "displayOrder:asc,createdAt:desc",
+      "filters[displayOrder][$gt]": "0",
+      sort: "displayOrder:asc",
+      "pagination[pageSize]": String(HOME_PRODUCT_COUNT),
+      "populate[images]": "true",
+    }),
+    fetchStrapi<StrapiResponse<Product>>("/products", {
+      "filters[isActive][$eq]": "true",
+      sort: "createdAt:desc",
+      "pagination[pageSize]": String(HOME_PRODUCT_COUNT),
       "populate[images]": "true",
     }),
     fetchStrapi<StrapiResponse<HeroBanner>>("/hero-banners", {
@@ -31,6 +40,12 @@ export default async function HomePage() {
       sort: "displayOrder:asc",
     }),
   ]);
+
+  const featuredIds = new Set(featured.data.map((product) => product.documentId));
+  const products = [
+    ...featured.data,
+    ...recent.data.filter((product) => !featuredIds.has(product.documentId)),
+  ].slice(0, HOME_PRODUCT_COUNT);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -50,7 +65,7 @@ export default async function HomePage() {
         </h2>
 
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
-          {products.data.map((product) => (
+          {products.map((product) => (
             <li key={product.documentId}>
               <ProductCard product={product} />
             </li>
