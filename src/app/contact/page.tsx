@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
     title: "Contact Us",
     description:
-        "Visit Arowa Studio at EBK-01, Dragon Mart 1, Dubai. Open daily 10 AM to 10 PM. WhatsApp +971 50 433 1603 or email info@arowastudio.com.",
+        "Contact Arowa Studio. WhatsApp +971 50 433 1603 or email info@arowastudio.com. Open daily 10 AM to 10 PM, with delivery across all seven emirates.",
     alternates: { canonical: "/contact" },
 };
 
@@ -15,22 +15,10 @@ export default function ContactPage() {
                 Contact Us
             </h1>
             <p className="mb-10 text-sm text-muted">
-                We reply to messages during shop hours, every day.
+                We reply to messages every day during opening hours.
             </p>
 
             <div className="prose prose-neutral max-w-none">
-                <h2>Visit our shop</h2>
-                <p>
-                    <strong>Arowa Studio</strong>
-                    <br />
-                    EBK-01, Dragon Mart 1
-                    <br />
-                    Dubai, United Arab Emirates
-                </p>
-                <p>
-                    <strong>Opening hours:</strong> 10:00 AM to 10:00 PM, daily
-                </p>
-
                 <h2>Get in touch</h2>
                 <p>
                     <strong>WhatsApp:</strong>{" "}
@@ -51,6 +39,18 @@ export default function ContactPage() {
                 <p>
                     WhatsApp is the fastest way to reach us. You can message us about a
                     product, an existing order, or a return.
+                </p>
+
+                <h2>Opening hours</h2>
+                <p>
+                    <strong>10:00 AM to 10:00 PM, daily.</strong>
+                </p>
+
+                <h2>Where we deliver</h2>
+                <p>
+                    We deliver across all seven emirates: Dubai, Abu Dhabi, Sharjah,
+                    Ajman, Umm Al Quwain, Ras Al Khaimah and Fujairah. Free delivery,
+                    with cash on delivery available.
                 </p>
 
                 <h2>Orders</h2>

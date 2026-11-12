@@ -6,7 +6,7 @@ import type { StrapiResponse, Category, Product, HeroBanner } from "@/types/cata
 import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
-import { buildLocalBusinessJsonLd } from "@/lib/jsonLd";
+import { buildStoreJsonLd } from "@/lib/jsonLd";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },

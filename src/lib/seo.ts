@@ -9,10 +9,3 @@ export function absoluteUrl(path: string): string {
 
 export const BUSINESS_PHONE_DISPLAY = "+971557519880";
 export const BUSINESS_PHONE_E164 = "+971504331603";
-
-export const BUSINESS_ADDRESS = {
-  street: "Dragon Mart - Al Awir Road",
-  locality: "Warsan First, Dubai International City",
-  region: "Dubai",
-  country: "AE",
-};
