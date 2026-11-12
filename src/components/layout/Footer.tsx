@@ -14,8 +14,11 @@ export default function Footer() {
                         Curated home and lifestyle products for modern living in the UAE.
                     </p>
                     <p className="mt-4 text-sm leading-relaxed text-white/70">
-                        Delivery across all seven emirates
-                        <br />
+                        Free delivery to your door across the UAE: Dubai, Abu Dhabi,
+                        Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah and Fujairah.
+                        Cash on delivery available.
+                    </p>
+                    <p className="mt-3 text-sm text-white/70">
                         <a
                             href={`tel:${BUSINESS_PHONE_E164}`}
                             className="transition hover:text-white"
