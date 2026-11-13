@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BUSINESS_PHONE_DISPLAY, BUSINESS_PHONE_E164 } from "@/lib/seo";
+import { BUSINESS_PHONE_DISPLAY } from "@/lib/seo";
 
 export default function Footer() {
     return (
@@ -20,7 +20,7 @@ export default function Footer() {
                     </p>
                     <p className="mt-3 text-sm text-white/70">
                         <a
-                            href={`tel:${BUSINESS_PHONE_E164}`}
+                            href={`tel:${BUSINESS_PHONE_DISPLAY}`}
                             className="transition hover:text-white"
                         >
                             {BUSINESS_PHONE_DISPLAY}
